@@ -1,15 +1,39 @@
 <template>
-  <img alt="Vue logo" src="./assets/logo.png">
-  <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <MyHeader AppName="MEMORIES APP" />
+  <div class="container">
+    <MemoriesList :memories="memories" />
+  </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import MyHeader from './components/MyHeader.vue'
+import MemoriesList from './components/MemoriesList.vue'
 
-export default {
+ export default {
   name: 'App',
-  components: {
-    HelloWorld
+
+  components:{
+    MyHeader,
+    MemoriesList
+  },
+
+  data(){
+    return {
+      memories: []
+    }
+  },
+
+  methods:{
+    async fetchMemories(){
+      const res = await fetch('https://memories-app-backend-pe4h.onrender.com/api');
+      const data = await res.json()
+      console.log(data)
+      return data
+    }
+  },
+
+  async created(){
+      this.memories = await this.fetchMemories();
   }
 }
 </script>
@@ -21,6 +45,14 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  margin-top: 60px;
+}
+.container {
+  display: flex;
+  flex-wrap: wrap;
+}
+html {
+  margin: 0;
+    background-color: antiquewhite;
+
 }
 </style>
